@@ -1,0 +1,9 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 로그인한 사람은 자기 칸(users/자기 아이디/...)만 읽고 쓸 수 있습니다. 다른 사람 칸은 아무도 못 봅니다.
+    match /users/{uid}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+  }
+}
