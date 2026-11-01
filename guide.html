@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>시간표 짜장 사용 설명서</title>
+<meta name="description" content="시간표 짜장으로 주간학습안내와 학년 시간표를 만드는 방법">
+<meta name="theme-color" content="#f3f5f3">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* Layout: 왼쪽 고정 목차 + 오른쪽 본문(흰 카드 섹션). 휴대폰에서는 목차가 위로. 인쇄하면 목차 없이 본문만. */
+:root{
+  --bg:#f3f5f3; --surface:#fff; --fill:#eff2f0; --fill-2:#e3e8e5; --line:#e8ece9;
+  --fg:#17201b; --fg-2:#2e3933; --muted:#65716a; --faint:#89948e;
+  --accent:#1f7a5a; --accent-strong:#165f45; --accent-soft:#e5f3ec;
+  --warn:#b85c00; --warn-soft:#fff3e3;
+  --shadow:0 1px 2px rgba(16,40,30,.05),0 2px 8px rgba(16,40,30,.04);
+  --font:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1311; --surface:#1a1f1c; --fill:#262c29; --fill-2:#313834; --line:#262c29;
+  --fg:#eef2ef; --fg-2:#d3dad6; --muted:#9ba69f; --faint:#7b8680;
+  --accent:#4fbf93; --accent-strong:#86d9b6; --accent-soft:#15302a; --warn:#f2b257; --warn-soft:#382915; --shadow:none; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1311; --surface:#1a1f1c; --fill:#262c29; --fill-2:#313834; --line:#262c29;
+  --fg:#eef2ef; --fg-2:#d3dad6; --muted:#9ba69f; --faint:#7b8680;
+  --accent:#4fbf93; --accent-strong:#86d9b6; --accent-soft:#15302a; --warn:#f2b257; --warn-soft:#382915; --shadow:none; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.75 var(--font);letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);font-weight:600;text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:3px}
+h1,h2,h3{margin:0;letter-spacing:-.03em;text-wrap:balance;line-height:1.35}
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:40px;max-width:1120px;margin:0 auto;padding:40px max(24px,env(safe-area-inset-right,0px)) 80px max(24px,env(safe-area-inset-left,0px))}
+.toc{position:sticky;top:24px;align-self:start;display:flex;flex-direction:column;gap:2px;font-size:14.5px}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(145deg,#2c9670,#17654b);color:#fff;display:grid;place-items:center;font-weight:800;flex:none}
+.brand b{display:block;font-size:16px;letter-spacing:-.03em}
+.brand small{display:block;color:var(--muted);font-size:12.5px}
+.toc a{color:var(--fg-2);font-weight:500;padding:6px 10px;border-radius:10px}
+.toc a:hover{background:var(--fill);text-decoration:none}
+.toc .open{margin-top:14px;background:var(--accent);color:#fff;text-align:center;font-weight:700;padding:10px}
+.toc .open:hover{background:var(--accent-strong)}
+main{display:flex;flex-direction:column;gap:18px;min-width:0}
+.hero{padding:6px 0 10px}
+.eyebrow{color:var(--accent);font-weight:600;font-size:14px}
+.hero h1{font-size:36px;font-weight:800;margin:6px 0 10px;letter-spacing:-.04em}
+.lead{color:var(--muted);font-size:17px;margin:0;max-width:62ch}
+section.card{background:var(--surface);border-radius:20px;padding:28px;box-shadow:var(--shadow);min-width:0}
+section.card > h2{font-size:23px;font-weight:800;display:flex;align-items:center;gap:10px;margin-bottom:6px}
+section.card > h2 .no{width:30px;height:30px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-size:14px;flex:none}
+section.card > p.sub{color:var(--muted);margin:0 0 14px}
+h3{font-size:17.5px;font-weight:700;margin:22px 0 6px}
+p{margin:6px 0 10px;max-width:68ch}
+ol,ul{margin:6px 0 12px;padding-left:22px;max-width:68ch}
+li{margin:4px 0}
+li::marker{color:var(--accent);font-weight:700}
+.ui{display:inline-block;background:var(--fill);color:var(--fg);border-radius:8px;padding:0 8px;font-weight:600;font-size:.92em;white-space:nowrap}
+.ui.pri{background:var(--accent);color:#fff}
+.tip,.note{border-radius:14px;padding:13px 16px;margin:12px 0;font-size:15px}
+.tip{background:var(--accent-soft)}
+.note{background:var(--warn-soft)}
+.tip b:first-child,.note b:first-child{margin-right:4px}
+.steps5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:14px 0 4px;padding:0;list-style:none}
+.steps5 li{margin:0;background:var(--fill);border-radius:14px;padding:12px;font-size:14px;color:var(--fg-2)}
+.steps5 b{display:block;font-size:15px;color:var(--fg)}
+.steps5 i{font-style:normal;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;font-weight:700;margin-bottom:6px}
+.tbl{overflow-x:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13px;color:var(--faint);font-weight:600}
+tr:last-child td{border-bottom:0}
+code{background:var(--fill);border-radius:6px;padding:1px 6px;font-size:.92em}
+.faq h3{margin-top:18px}
+footer{color:var(--faint);font-size:13.5px;text-align:center;padding-top:10px}
+@media (max-width:900px){
+  .layout{grid-template-columns:minmax(0,1fr);gap:20px;padding-top:20px}
+  .toc{position:static;flex-direction:row;flex-wrap:wrap;gap:6px}
+  .toc .brand{width:100%;margin-bottom:4px}
+  .toc a{background:var(--surface);box-shadow:var(--shadow);font-size:13.5px;padding:5px 12px;border-radius:999px}
+  .toc .open{margin-top:0}
+  .steps5{grid-template-columns:minmax(0,1fr);gap:6px}
+  .steps5 li{display:flex;align-items:center;gap:10px;padding:10px 12px}
+  .steps5 li i{margin:0;flex:none}
+  .steps5 b{display:inline;margin-right:6px}
+  .hero h1{font-size:30px}
+  section.card{padding:22px}
+}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .toc{display:none}
+  .layout{display:block;padding:0}
+  section.card{box-shadow:none;border:1px solid #ddd;break-inside:avoid-page;margin-bottom:12px}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <nav class="toc" aria-label="목차">
+    <div class="brand"><span class="mark" aria-hidden="true">짜</span><div><b>시간표 짜장</b><small>사용 설명서</small></div></div>
+    <a href="#start">1. 시작하기</a>
+    <a href="#tour">2. 화면 둘러보기</a>
+    <a href="#setup">3. 기본 설정 (처음 한 번)</a>
+    <a href="#week">4. 매주 할 일 5단계</a>
+    <a href="#teacher">5. 담임 선생님 요청 받기</a>
+    <a href="#ahead">6. 미리 짜기·지난 기록</a>
+    <a href="#save">7. 저장·백업·이사</a>
+    <a href="#faq">8. 자주 묻는 질문</a>
+    <a class="open" href="./">시간표 짜장 열기 →</a>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <span class="eyebrow">주간학습안내 · 학년 시간표</span>
+      <h1>시간표 짜장 사용 설명서</h1>
+      <p class="lead">학기 진도표와 담임 선생님들의 요청을 넣으면 학년 전체 시간표를 자동으로 짜고, 주간학습안내 PDF까지 만들어 주는 도구예요. 처음 한 번 기본 설정을 하고 나면, 매주 다섯 단계만 따라가면 돼요.</p>
+    </header>
+
+    <section class="card" id="start">
+      <h2><span class="no">1</span>시작하기</h2>
+      <p class="sub">주소: <a href="https://llyj59-dotcom.github.io/">llyj59-dotcom.github.io</a> · 컴퓨터, 태블릿, 휴대폰 모두 돼요.</p>
+      <h3>회원가입하고 쓰기 (추천)</h3>
+      <ol>
+        <li>주소를 열고 <span class="ui">처음이에요 · 회원가입</span>을 눌러요.</li>
+        <li>이메일과 비밀번호(6자 이상)를 넣고 <span class="ui pri">가입하고 시작하기</span>를 눌러요. 구글 계정이 있으면 <span class="ui">구글 계정으로 계속하기</span>로 한 번에 들어가도 돼요.</li>
+        <li>다음부터는 어느 컴퓨터에서든 같은 계정으로 로그인하면 쓰던 내용이 그대로 나와요.</li>
+      </ol>
+      <div class="tip"><b>내 내용은 나만 봐요.</b> 계정마다 따로 저장돼서, 같은 주소를 쓰는 다른 선생님이나 관리자도 내 시간표를 볼 수 없어요.</div>
+      <h3>로그인 없이 쓰기</h3>
+      <p>로그인 화면 아래 <span class="ui">이 컴퓨터에서만 쓰기</span>를 누르면 가입 없이 바로 써요. 이때는 <b>지금 쓰는 컴퓨터의 브라우저에만</b> 저장돼요. 나중에 가입하고 로그인하면 그동안 쓴 내용이 계정으로 자동으로 옮겨져요.</p>
+      <h3>비밀번호를 잊었을 때</h3>
+      <p>로그인 화면의 <span class="ui">비밀번호를 잊었어요</span> → 이메일을 넣고 <span class="ui">메일 보내기</span>. 받은 메일의 링크로 새 비밀번호를 정해요. 메일이 안 보이면 스팸함을 확인하세요.</p>
+    </section>
+
+    <section class="card" id="tour">
+      <h2><span class="no">2</span>화면 둘러보기</h2>
+      <p class="sub">왼쪽 메뉴에서 단계를 고르고, 오른쪽에서 그 단계를 처리해요. 휴대폰에서는 메뉴가 화면 위에 있어요.</p>
+      <table>
+        <tbody>
+          <tr><th>만들고 있는 주</th><td>왼쪽 위 <span class="ui">‹</span> <span class="ui">›</span>로 주를 넘겨요. 날짜로 바로 찾을 수도 있어요. 다음 주, 다다음 주도 미리 짤 수 있어요.</td></tr>
+          <tr><th>한눈에 보기</th><td>이번 주가 다섯 단계 중 어디까지 끝났는지, <b>지금 할 일</b>이 무엇인지 보여 줘요. 큰 초록 버튼을 누르면 그 단계로 바로 가요.</td></tr>
+          <tr><th>매주 할 일</th><td>① 일정 확인 → ② 진도표 넣기 → ③ 요청 모으기 → ④ 시간표 짜기 → ⑤ 확정·내보내기. 끝난 단계에는 ✓, 다음에 할 단계에는 <b>지금</b> 표시가 붙어요.</td></tr>
+          <tr><th>필요할 때</th><td>기본 설정, 지난 기록, 사용 안내, 이 설명서, 백업 저장·불러오기, 로그아웃이 있어요.</td></tr>
+          <tr><th>아래 떠 있는 바</th><td>모든 단계 화면 아래에 <span class="ui">← 이전</span>과 <span class="ui pri">다음: ○○ →</span>가 있어요. 이것만 따라 눌러도 한 주가 끝나요.</td></tr>
+        </tbody>
+      </table>
+      <p>저장 버튼은 따로 없어요. 고치는 즉시 자동으로 저장되고, 왼쪽 아래에 <b>내 계정에 저장됨</b>(로그인 안 했으면 <b>이 브라우저에만 저장</b>)이 표시돼요.</p>
+    </section>
+
+    <section class="card" id="setup">
+      <h2><span class="no">3</span>기본 설정 (처음 한 번)</h2>
+      <p class="sub">처음 들어오면 학교 이름·학년·학급 수, 요일별 교시를 묻는 짧은 화면이 나오고, 이어서 기본 설정으로 넘어가요. 여기 값이 매주 시간표의 기준이 돼요. 왼쪽 메뉴 <span class="ui">기본 설정</span>에서 언제든 다시 고칠 수 있어요.</p>
+      <ol>
+        <li><b>학교·학년</b> — 학교 이름, 학기 1주차 월요일(넣으면 ‘(9주)’처럼 주차가 붙고, 진도표를 주차 번호로 올릴 수 있어요), 학급 수, 반별 필수 요청 최대 개수.</li>
+        <li><b>교시·점심</b> — 요일마다 기본 몇 교시인지, 점심이 몇 교시 뒤인지. 특정 주만 다르면 그 주의 ‘일정 확인’에서 바꿔요.</li>
+        <li><b>과목</b> — 과목 이름·약어·담당(담임 / 전담 / 일부 전담)·장소. 자율·동아리·봉사·진로도 과목으로 들어가 있어요. ‘예비 시수’는 진도표가 없는 주에만 써요. <span class="ui">세부 규칙도 보기</span>를 켜면 2연강, 하루 최대 시간, 오전·오후 선호를 정할 수 있어요.</li>
+        <li><b>전담 선생님</b> — 전담 과목마다 맡는 선생님과 반(예: 과학 1~7반, 8~11반), 수업 장소, 시간표에 칠할 색을 정해요. 체육처럼 일부만 전담이면 ‘매주 전담 몇 시간’을 넣어요.</li>
+        <li><b>특별실</b> — 과학실, 강당처럼 한 번에 한 반만 쓰는 곳. 선생님마다 쓰는 특별실이 다르면 장소를 따로 만들어요(예: 과학실(1~7반), 과학실(8~11반)). 우리 학년이 쓸 수 있는 시간만 표시할 수도 있어요.</li>
+        <li><b>고정 시간</b> — 매주 같은 시간에 하는 수업(예: 동아리 목 5~6교시, 대상 1-7,10-11반).</li>
+        <li><b>공휴일</b> — 2026~2027년 공휴일이 들어 있어요. 임시공휴일이 생기면 추가해요.</li>
+        <li><b>담임 이름</b> — 넣으면 요청 목록에 이름이 함께 보여요(선택).</li>
+      </ol>
+      <div class="tip"><b>다른 학년도 함께?</b> 학교·학년 단계의 <span class="ui">학년 바꾸기·추가·삭제</span>에서 학년을 더하면, 왼쪽 위에서 학년을 골라 따로 관리할 수 있어요.</div>
+    </section>
+
+    <section class="card" id="week">
+      <h2><span class="no">4</span>매주 할 일 5단계</h2>
+      <p class="sub">왼쪽 위에서 만들 주를 고른 다음, 차례대로 진행해요.</p>
+      <ul class="steps5">
+        <li><i>1</i><b>일정 확인</b>쉬는 날·행사</li>
+        <li><i>2</i><b>진도표 넣기</b>학기 파일 한 번</li>
+        <li><i>3</i><b>요청 모으기</b>담임 요청</li>
+        <li><i>4</i><b>시간표 짜기</b>자동으로</li>
+        <li><i>5</i><b>확정·내보내기</b>PDF·한글</li>
+      </ul>
+
+      <h3>① 일정 확인</h3>
+      <ul>
+        <li>요일 카드에서 교시 수를 고치거나 <span class="ui">쉬는 날</span>을 체크해요. 이번 주만 바꾼 날은 노란 테두리로 보여요.</li>
+        <li><span class="ui">행사 추가</span>로 체험학습·졸업앨범 촬영처럼 그 시간에 수업이 없는 행사를 넣어요. 대상 반을 <code>1-5</code>처럼 정할 수 있어요.</li>
+        <li>아래 펼치기 항목은 필요할 때만: 외부강사·특별 수업(정해진 칸에 고정), 전담 선생님 출장·연수, 특별실 못 쓰는 시간, 여러 날 한꺼번에 바꾸기(학기말 단축수업 등).</li>
+        <li>평소와 같으면 바로 <span class="ui pri">다음</span>을 눌러요.</li>
+      </ul>
+
+      <h3>② 진도표 넣기</h3>
+      <p><b>학기 진도표를 한 번만 올리면</b> 주차별로 알아서 나눠 모든 주에 들어가요. 그다음 주부터는 이 단계에서 확인만 하면 돼요.</p>
+      <ul>
+        <li>파일을 화면에 끌어다 놓거나 눌러서 골라요. <b>한글(.hwp, .hwpx)</b>, 엑셀(.xlsx), CSV를 읽어요.</li>
+        <li>‘과목별 연간지도계획’처럼 과목마다 표가 따로 있으면, 표 제목에서 과목을 찾고 <b>기간</b> 칸으로 주를 나눠요. 표의 <b>한 줄이 1교시</b>예요. ‘▼시수감축’처럼 한 줄에 차시가 둘이면 두 차시를 한 시간에 하는 것으로 봐요.</li>
+        <li>과목별 줄 수가 <b>그 주의 시수</b>가 되고, 학습 내용·쪽수·차시는 주간학습안내에 그대로 찍혀요.</li>
+        <li>이미 확정한 주는 다시 올려도 바뀌지 않아요. 고치려면 그 주에서 <span class="ui">이 주 진도표 비우기</span> 후 다시 올려요.</li>
+        <li>표에서 바로 고칠 수도 있어요. <span class="ui">+</span>는 1시간 추가, <span class="ui">−</span>는 1시간 빼기.</li>
+      </ul>
+      <div class="note"><b>과목이 빠졌다고 나오면</b> 진도표의 과목 이름이 기본 설정의 과목 이름과 달라서예요. 기본 설정 → 과목에서 이름을 맞추거나 과목을 추가한 뒤 다시 올려 주세요.</div>
+
+      <h3>③ 요청 모으기</h3>
+      <ul>
+        <li><b>요청서 파일 보내기</b>: <span class="ui pri">요청서 파일 만들기</span>로 받은 파일을 메신저로 담임 선생님들께 보내요. 선생님이 답장으로 보낸 <b>요청 코드</b>를 여러 개 한꺼번에 붙여 넣고 <span class="ui">요청 가져오기</span>. (자세한 건 5장)</li>
+        <li><b>내가 대신 넣기</b>: 메신저나 말로 받은 요청은 ‘말로 요청 넣기’ 칸에 그대로 적어요. 예: <code>1반 화요일 2교시 담임 수업 / 8반 화 5-6교시 전담 꼭</code>. 앱이 반·요일·교시·종류를 알아듣고 칸으로 바꿔 보여 줘요.</li>
+        <li><b>칸 눌러 넣기</b>: <span class="ui">반별로 칸 눌러 넣기</span>를 펼쳐 반을 고르고, 요청 종류를 고른 뒤 칸을 눌러요.</li>
+      </ul>
+      <table>
+        <thead><tr><th>요청 종류</th><th>뜻</th></tr></thead>
+        <tbody>
+          <tr><td>전담 희망</td><td>이 시간에 전담 수업을 넣어 주세요(회의·상담·출장 등으로 담임이 비어야 할 때)</td></tr>
+          <tr><td>담임 수업</td><td>이 시간은 담임이 수업해요(전담 수업을 넣지 마세요)</td></tr>
+          <tr><td>과목 지정</td><td>이 시간에 특정 과목을 넣어 주세요</td></tr>
+          <tr><td>우선순위</td><td>필수 &gt; 희망 &gt; 있으면 좋음. 다 들어줄 수 없을 때 필수부터 지켜요</td></tr>
+          <tr><td>이번 주만 / 매주 반복</td><td>매주 반복을 고르면 다음 주부터도 자동으로 들어가요. 요청 목록에서 ‘이번 주만 빼기’, ‘매주 끄기’도 돼요</td></tr>
+        </tbody>
+      </table>
+      <p>모든 요청은 <b>이번 주 요청 모아보기</b> 표에 쌓이고, 시간표를 짜면 ‘반영 / 못 넣음’과 그 이유가 표시돼요. 다 모았으면 <span class="ui">요청 마감하기</span>를 눌러도 돼요.</p>
+
+      <h3>④ 시간표 짜기</h3>
+      <ul>
+        <li><span class="ui pri">시간표 자동으로 짜기</span>를 누르면 진도표 시수, 요청, 쉬는 날·행사, 전담 선생님·특별실이 겹치지 않는 조건을 모두 맞춰 학년 전체를 짜요.</li>
+        <li>요청을 한 번에 다 들어줄 수 없으면 <b>여러 가지 안</b>을 보여 줘요. 안마다 몇 개를 들어줬는지 비교하고 골라 <span class="ui">적용</span>해요.</li>
+        <li><b>칸 바꾸기</b>: 바꿀 칸을 누르면 바꿀 수 있는 칸이 점선으로 보여요. 그 칸을 누르면 서로 바뀌어요. 오른쪽에서 과목을 직접 고르거나 <span class="ui">이 칸 고정</span>을 할 수도 있어요(다시 짜도 유지).</li>
+        <li>위쪽 표시: <b>꼭 고칠 것</b>(선생님·특별실이 겹침 등)은 0이 되어야 하고, <b>확인해 볼 것</b>은 참고만 하면 돼요.</li>
+        <li><span class="ui">되돌리기</span>(Ctrl+Z), <span class="ui">요청 더 반영하기</span>(지금 시간표를 크게 흔들지 않고 다듬기), <span class="ui">처음부터 다시 짜기</span>가 있어요.</li>
+        <li><span class="ui">말로 고치기</span>를 펼쳐 “3반 목요일 3교시 전담으로”처럼 적으면 수정안을 만들어 보여 줘요.</li>
+        <li>보기 바꾸기: 한 반씩 / 학년 전체 / 전담 선생님별.</li>
+      </ul>
+
+      <h3>⑤ 확정·내보내기</h3>
+      <ul>
+        <li>확인 목록(시간표 있음, 겹침 없음, 요청 반영, 진도표 빈 줄)을 보고 <span class="ui pri">이 시간표로 확정하기</span>를 눌러요. 확정할 때마다 기록이 남아요.</li>
+        <li>확정한 뒤 칸을 바꾸면 <b>바뀐 내용</b>이 따로 보이고, <span class="ui">변경 안내 문구 복사</span>로 선생님들께 알릴 문장을 만들어 줘요.</li>
+        <li><b>PDF 받기</b>: 학년 통합 / 한 반 / 반별 묶음, A4 세로·가로를 고르고 <span class="ui pri">PDF 파일 받기</span>. 순서는 주간학습안내 → 시간표 → 가정통신문이에요.</li>
+        <li><b>한글에 붙여넣기</b>: <span class="ui">안내표 복사</span>, <span class="ui">시간표 복사</span>를 누르고 한글 문서에 붙여 넣으면 표로 들어가요. 엑셀(CSV)로도 받을 수 있어요.</li>
+        <li><span class="ui">인쇄물 문구 고치기</span>를 펼치면 날짜별 안내, 가정통신 칸, 마지막 장 가정통신문(제목·본문)을 쓸 수 있어요.</li>
+      </ul>
+    </section>
+
+    <section class="card" id="teacher">
+      <h2><span class="no">5</span>담임 선생님 요청 받기</h2>
+      <p class="sub">담임 선생님은 가입이나 설치 없이, 받은 파일 하나로 요청해요.</p>
+      <h3>담당 선생님이 할 일</h3>
+      <ol>
+        <li>요청 받을 주로 넘긴 뒤 ③ 요청 모으기 → <span class="ui pri">요청서 파일 만들기</span>. 그 주의 날짜·교시·행사가 담긴 파일이 받아져요.</li>
+        <li>메신저로 담임 선생님들께 보내요. 마감 안내(예: 목요일 오후 3시까지)를 적어 두면 함께 전해져요.</li>
+        <li>답장으로 온 코드(<code>주간요청:</code>로 시작)를 모두 복사해 <b>답장으로 받은 코드 붙여넣기</b> 칸에 한꺼번에 붙여 넣고 <span class="ui">요청 가져오기</span>.</li>
+      </ol>
+      <h3>담임 선생님이 할 일</h3>
+      <ol>
+        <li>받은 파일을 열어 우리 반을 고르고, 요청 종류를 고른 뒤 칸을 눌러요. “화요일 2교시는 담임, 목요일 3·4교시는 상담이라 전담”처럼 말로 적어도 돼요.</li>
+        <li><span class="ui pri">요청 코드 복사</span>를 누르고 담당 선생님께 메신저로 보내요. 요청이 없어도 보내면 ‘요청 없음’으로 처리돼요.</li>
+      </ol>
+      <div class="tip"><b>같은 반이 다시 보내면?</b> 그 코드로 보냈던 칸만 새 내용으로 바뀌고, 담당 선생님이 따로 넣은 요청은 그대로 남아요.</div>
+    </section>
+
+    <section class="card" id="ahead">
+      <h2><span class="no">6</span>미리 짜기·지난 기록</h2>
+      <ul>
+        <li><b>미리 짜기</b>: 왼쪽 위 <span class="ui">›</span>로 다음 주로 넘기면 그 주의 다섯 단계를 똑같이 할 수 있어요. 한눈에 보기 아래 <b>앞으로의 주</b> 목록에서 주마다 상태(확정 / 시간표 있음 / 진도표만 있음)를 보고 <span class="ui">이 주 열기</span>로 바로 가요.</li>
+        <li><b>지난 기록</b>: 왼쪽 메뉴 <span class="ui">지난 기록</span>에서 예전 주의 시간표와 주간학습안내를 미리 보고, PDF로 다시 받거나, 그 주로 가서 고칠 수 있어요.</li>
+      </ul>
+    </section>
+
+    <section class="card" id="save">
+      <h2><span class="no">7</span>저장·백업·이사</h2>
+      <table>
+        <thead><tr><th>쓰는 방법</th><th>저장되는 곳</th><th>다른 컴퓨터에서</th></tr></thead>
+        <tbody>
+          <tr><td>로그인해서</td><td>내 계정</td><td>같은 계정으로 로그인하면 바로 이어져요</td></tr>
+          <tr><td>로그인 없이</td><td>그 컴퓨터 그 브라우저</td><td>백업 파일로 옮겨야 해요</td></tr>
+        </tbody>
+      </table>
+      <ul>
+        <li><b>백업 저장</b>: 왼쪽 메뉴 아래 <span class="ui">백업 저장</span> → 파일(.json) 하나가 받아져요. 로그인해서 써도 학기마다 한 번씩 받아 두면 안심이에요.</li>
+        <li><b>백업 불러오기</b>: 다른 컴퓨터나 새 계정에서 <span class="ui">백업 불러오기</span>로 그 파일을 고르면 그대로 이어져요.</li>
+        <li><b>예전 claude.ai 판에서 옮기기</b>: 예전 화면에서 백업 저장 → 이 주소에서 로그인 → 백업 불러오기.</li>
+      </ul>
+      <div class="note"><b>로그인 없이 쓸 때</b> 브라우저의 ‘인터넷 사용 기록·쿠키 삭제’를 하거나 시크릿 창을 쓰면 내용이 사라질 수 있어요. 꼭 백업을 받아 두거나 로그인해서 쓰세요.</div>
+    </section>
+
+    <section class="card faq" id="faq">
+      <h2><span class="no">8</span>자주 묻는 질문</h2>
+      <h3>다른 선생님도 이 주소를 써도 되나요?</h3>
+      <p>네. 주소만 알려 주면 각자 가입해서 자기 학교·학년 설정으로 따로 써요. 서로의 내용은 보이지 않아요.</p>
+      <h3>시간표 시수가 생각과 달라요.</h3>
+      <p>그 주 진도표의 과목별 줄 수가 시수예요. ② 진도표 넣기 화면 오른쪽 ‘이번 주 시수’를 확인하세요. 쉬는 날·행사로 칸이 모자라면 기본 설정의 ‘줄일 때 순위’가 낮은 과목부터 줄여요.</p>
+      <h3>‘꼭 고칠 것’이 사라지지 않아요.</h3>
+      <p>목록을 누르면 그 반과 칸으로 이동해요. 대부분 같은 시간에 전담 선생님이나 특별실이 두 반에 겹친 경우예요. 칸을 다른 시간과 바꾸거나 <span class="ui">요청 더 반영하기</span>를 눌러 보세요.</p>
+      <h3>구글 로그인이 안 돼요.</h3>
+      <p>팝업이 막혔을 수 있어요. 주소창 오른쪽의 팝업 차단 표시를 눌러 이 사이트를 허용한 뒤 다시 눌러 주세요.</p>
+      <h3>PDF가 안 받아져요.</h3>
+      <p>브라우저 아래나 오른쪽 위의 다운로드 표시를 확인하세요. 크롬·엣지 최신 버전을 권해요. 학교 컴퓨터에서 다운로드가 막혀 있으면 ‘한글에 붙여넣기’를 쓰세요.</p>
+      <h3>휴대폰에서도 되나요?</h3>
+      <p>네. 요청 확인, 시간표 보기, 칸 바꾸기 모두 돼요. 학기 진도표 올리기와 PDF 만들기는 컴퓨터가 편해요.</p>
+    </section>
+
+    <footer>시간표 짜장 · 궁금한 점은 이 주소를 알려 준 선생님께 물어보세요</footer>
+  </main>
+</div>
+</body>
+</html>
