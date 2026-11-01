@@ -102,10 +102,11 @@ footer{color:var(--faint);font-size:13.5px;text-align:center;padding-top:10px}
     <a href="#tour">2. 화면 둘러보기</a>
     <a href="#setup">3. 기본 설정 (처음 한 번)</a>
     <a href="#week">4. 매주 할 일 5단계</a>
-    <a href="#teacher">5. 담임 선생님 요청 받기</a>
-    <a href="#ahead">6. 미리 짜기·지난 기록</a>
-    <a href="#save">7. 저장·백업·이사</a>
-    <a href="#faq">8. 자주 묻는 질문</a>
+    <a href="#conflict">5. 요청이 다 안 맞을 때</a>
+    <a href="#teacher">6. 담임 선생님 요청 받기</a>
+    <a href="#ahead">7. 미리 짜기·지난 기록</a>
+    <a href="#save">8. 저장·백업·이사</a>
+    <a href="#faq">9. 자주 묻는 질문</a>
     <a class="open" href="./">주간쌤 열기 →</a>
   </nav>
 
@@ -195,7 +196,7 @@ footer{color:var(--faint);font-size:13.5px;text-align:center;padding-top:10px}
 
       <h3>③ 요청 모으기</h3>
       <ul>
-        <li><b>요청서 파일 보내기</b>: <span class="ui pri">요청서 파일 만들기</span>로 받은 파일을 메신저로 담임 선생님들께 보내요. 선생님이 답장으로 보낸 <b>요청 코드</b>를 여러 개 한꺼번에 붙여 넣고 <span class="ui">요청 가져오기</span>. (자세한 건 5장)</li>
+        <li><b>요청서 파일 보내기</b>: <span class="ui pri">요청서 파일 만들기</span>로 받은 파일을 메신저로 담임 선생님들께 보내요. 선생님이 답장으로 보낸 <b>요청 코드</b>를 여러 개 한꺼번에 붙여 넣고 <span class="ui">요청 가져오기</span>. (자세한 건 6장)</li>
         <li><b>내가 대신 넣기</b>: 메신저나 말로 받은 요청은 ‘말로 요청 넣기’ 칸에 그대로 적어요. 예: <code>1반 화요일 2교시 담임 수업 / 8반 화 5-6교시 전담 꼭</code>. 앱이 반·요일·교시·종류를 알아듣고 칸으로 바꿔 보여 줘요.</li>
         <li><b>칸 눌러 넣기</b>: <span class="ui">반별로 칸 눌러 넣기</span>를 펼쳐 반을 고르고, 요청 종류를 고른 뒤 칸을 눌러요.</li>
       </ul>
@@ -232,8 +233,39 @@ footer{color:var(--faint);font-size:13.5px;text-align:center;padding-top:10px}
       </ul>
     </section>
 
+    <section class="card" id="conflict">
+      <h2><span class="no">5</span>요청이 다 안 맞을 때</h2>
+      <p class="sub">요청을 모두 지키는 시간표가 없어도 시간표는 나와요. 주간쌤이 <b>최대한 많이 들어준 안</b>을 여러 개 만들고, <b>못 넣은 요청과 그 이유</b>를 보여 줘요. 선생님은 그중 하나를 고르고 남은 몇 칸만 정리하면 돼요.</p>
+      <h3>주간쌤이 하는 일</h3>
+      <ul>
+        <li><b>여러 가지 안</b>: “요청을 가장 많이 반영(추천)”, “○반 요청을 먼저”, “다른 조합”처럼 안을 나란히 보여 줘요. 안마다 <code>요청 18/20 반영 · 필수 1칸 못 넣음</code>처럼 숫자가 붙고, 누르면 시간표가 미리 보여요. 마음에 드는 안을 <span class="ui pri">적용</span>해요.</li>
+        <li><b>우선순위</b>: 필수 &gt; 희망 &gt; 있으면 좋음. 필수 하나가 희망 여러 개보다 훨씬 무겁게 계산돼서 웬만하면 필수부터 지켜요.</li>
+        <li><b>못 넣은 이유</b>: 요청마다 이유가 붙고, 누르면 그 반·그 칸으로 바로 가요.</li>
+      </ul>
+      <table>
+        <thead><tr><th>자주 나오는 이유</th><th>무슨 뜻인지</th></tr></thead>
+        <tbody>
+          <tr><td>○○ 선생님이 다른 반 수업 중</td><td>같은 시간에 두 반이 같은 전담 선생님을 원해요(예: 2반·6반 모두 월 6교시 과학)</td></tr>
+          <tr><td>특별실 사용 중 / 사용 불가 시간</td><td>그 시간에 다른 반이 특별실을 쓰거나, 우리 학년이 쓸 수 없는 시간이에요</td></tr>
+          <tr><td>수업이 없는 시간</td><td>행사·고정 시간·외부강사 칸이라 바꿀 수 없어요</td></tr>
+          <tr><td>그 과목 시수가 모자람</td><td>그 주 진도표에 그 과목 줄이 적어서 넣을 시간이 없어요</td></tr>
+        </tbody>
+      </table>
+      <h3>선생님이 할 일 (이 순서로)</h3>
+      <ol>
+        <li><b>안 고르기</b> — 필수를 못 넣은 칸이 가장 적은 안을 먼저 골라 적용해요.</li>
+        <li><b>한 번 더 돌려 보기</b> — <span class="ui">처음부터 다시 짜기</span>는 다른 조합을 찾고, <span class="ui">요청 더 반영하기</span>는 지금 시간표를 크게 흔들지 않고 빈틈만 다시 맞춰요.</li>
+        <li><b>직접 맞바꾸기</b> — 못 넣은 칸을 누르면 바꿀 수 있는 칸이 점선으로 보여요. 그 칸을 누르면 서로 바뀌어요. 흐린 칸에 마우스를 올리면 왜 안 되는지 보여요.</li>
+        <li><b>지킬 칸 고정</b> — 꼭 지켜야 하는 칸은 오른쪽의 <span class="ui">이 칸 고정</span>을 눌러 두면 다시 짜도 그대로예요.</li>
+        <li><b>선생님과 조율</b> — 정말 서로 부딪히는 요청은 앱이 둘 다 들어줄 수 없어요. 이유 목록에서 누구와 누구가 겹치는지 보고 한 분께 시간을 바꿔도 되는지 물어보세요. 또는 ③ 요청 모으기 표에서 덜 급한 쪽을 <b>필수 → 희망</b>으로 낮춘 뒤 다시 짜요.</li>
+      </ol>
+      <div class="tip"><b>미리 줄이는 방법</b> 기본 설정 → 학교·학년의 <b>반별 필수 요청 최대 개수</b>를 2~3개로 두세요. 모두가 필수만 걸면 서로 부딪히기 쉬워요.</div>
+      <div class="tip"><b>확정한 뒤에 바꿨다면</b> ⑤ 확정·내보내기의 <span class="ui">변경 안내 문구 복사</span>로 바뀐 칸만 담임 선생님들께 알리면 돼요.</div>
+      <p>앱의 시간표 짜기 화면에도 못 넣은 요청이 남아 있으면 <b>“못 넣은 요청 ○칸, 이렇게 정리해요”</b> 안내가 펼쳐 볼 수 있게 나와요.</p>
+    </section>
+
     <section class="card" id="teacher">
-      <h2><span class="no">5</span>담임 선생님 요청 받기</h2>
+      <h2><span class="no">6</span>담임 선생님 요청 받기</h2>
       <p class="sub">담임 선생님은 가입이나 설치 없이, 받은 파일 하나로 요청해요.</p>
       <h3>담당 선생님이 할 일</h3>
       <ol>
@@ -250,7 +282,7 @@ footer{color:var(--faint);font-size:13.5px;text-align:center;padding-top:10px}
     </section>
 
     <section class="card" id="ahead">
-      <h2><span class="no">6</span>미리 짜기·지난 기록</h2>
+      <h2><span class="no">7</span>미리 짜기·지난 기록</h2>
       <ul>
         <li><b>미리 짜기</b>: 왼쪽 위 <span class="ui">›</span>로 다음 주로 넘기면 그 주의 다섯 단계를 똑같이 할 수 있어요. 한눈에 보기 아래 <b>앞으로의 주</b> 목록에서 주마다 상태(확정 / 시간표 있음 / 진도표만 있음)를 보고 <span class="ui">이 주 열기</span>로 바로 가요.</li>
         <li><b>지난 기록</b>: 왼쪽 메뉴 <span class="ui">지난 기록</span>에서 예전 주의 시간표와 주간학습안내를 미리 보고, PDF로 다시 받거나, 그 주로 가서 고칠 수 있어요.</li>
@@ -258,7 +290,7 @@ footer{color:var(--faint);font-size:13.5px;text-align:center;padding-top:10px}
     </section>
 
     <section class="card" id="save">
-      <h2><span class="no">7</span>저장·백업·이사</h2>
+      <h2><span class="no">8</span>저장·백업·이사</h2>
       <table>
         <thead><tr><th>쓰는 방법</th><th>저장되는 곳</th><th>다른 컴퓨터에서</th></tr></thead>
         <tbody>
@@ -275,7 +307,7 @@ footer{color:var(--faint);font-size:13.5px;text-align:center;padding-top:10px}
     </section>
 
     <section class="card faq" id="faq">
-      <h2><span class="no">8</span>자주 묻는 질문</h2>
+      <h2><span class="no">9</span>자주 묻는 질문</h2>
       <h3>다른 선생님도 이 주소를 써도 되나요?</h3>
       <p>네. 주소만 알려 주면 각자 가입해서 자기 학교·학년 설정으로 따로 써요. 서로의 내용은 보이지 않아요.</p>
       <h3>시간표 시수가 생각과 달라요.</h3>

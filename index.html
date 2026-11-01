@@ -1586,6 +1586,7 @@ function setupParts() {
           <label class="f" title="학습 안내의 과목별 시수를 이 반 시간표로 계산합니다">진도 기준 반<input type="number" min="1" max="${n}" value="${g.refClass || 1}" data-ch="refClass"></label>
           <label class="f">반별 필수 요청 최대 개수<input type="number" min="0" max="10" value="${g.maxMust}" data-ch="maxMust"></label>
         </div>
+        <p class="hint"><b>필수 요청은 2~3개를 권해요.</b> 여러 반이 같은 시간에 같은 전담 선생님을 필수로 원하면 둘 다 들어줄 수 없어요. 그럴 때 앱은 최대한 많이 들어준 안을 여러 개 보여 주고, 못 넣은 요청과 이유를 알려 줘요. <a href="https://llyj59-dotcom.github.io/guide.html#conflict" target="_blank" rel="noopener">요청이 다 안 맞을 때</a></p>
       </section></div>
       ${det('gradeMore', '학년 바꾸기·추가·삭제', '새 학년도에 학년이 바뀌거나 여러 학년을 함께 관리할 때', 0, `
         <div class="row" style="gap:16px;align-items:flex-end">
@@ -2045,6 +2046,17 @@ function genDraft() {
     toast(opts.length > 1 ? `요청을 한 번에 다 들어줄 수 없어 ${opts.length}가지 안을 만들었어요` : '들어주지 못한 요청이 있어요. 확인하고 적용해 주세요');
   }, 40);
 }
+/* 요청을 다 들어줄 수 없을 때 순서대로 해 볼 일 */
+function conflictTipsHTML() {
+  return `<ol class="steps-help" style="margin:0">
+      <li><b>안 고르기</b>: 필수를 못 넣은 칸이 가장 적은 안을 먼저 골라 적용해요.</li>
+      <li><b>한 번 더 돌려 보기</b>: <b>처음부터 다시 짜기</b>는 다른 조합을, <b>요청 더 반영하기</b>는 지금 시간표를 크게 흔들지 않고 빈틈만 다시 맞춰요.</li>
+      <li><b>직접 맞바꾸기</b>: 못 넣은 칸을 누르면 바꿀 수 있는 칸이 점선으로 보여요. 그 칸을 누르면 서로 바뀌어요.</li>
+      <li><b>지킬 칸 고정</b>: 꼭 지켜야 하는 칸은 <b>이 칸 고정</b>을 눌러 두면 다시 짜도 그대로예요.</li>
+      <li><b>선생님과 조율</b>: 두 반이 같은 시간에 같은 전담 선생님을 원하면 둘 다 들어줄 수 없어요. 아래 이유를 보고 한 분께 시간을 물어보거나, 요청 모으기 표에서 덜 급한 쪽을 필수 → 희망으로 낮춘 뒤 다시 짜요.</li>
+    </ol>
+    <p class="hint">미리 줄이려면: 기본 설정 → 학교·학년의 <b>반별 필수 요청 최대 개수</b>를 2~3개로 두세요. <a href="https://llyj59-dotcom.github.io/guide.html#conflict" target="_blank" rel="noopener">설명서에서 자세히 보기</a></p>`;
+}
 function proposalPanelHTML(ctx) {
   const pr = ui.proposal; if (!pr || pr.key !== chatKey()) return ''; const g = ctx.G; const o = curOpt();
   const many = pr.opts.length > 1;
@@ -2052,6 +2064,7 @@ function proposalPanelHTML(ctx) {
     <p class="small" style="margin:0">${o.unmet.length ? (many ? `모든 요청을 한 번에 들어줄 수는 없어서, <b>최대한 많이 들어주는 안</b>을 여러 개 만들었어요. 골라서 적용하세요.` : '아래 요청은 들어주지 못했어요. 확인하고 적용하거나 다시 짜 보세요.') : '<b>들어온 요청을 모두 반영했어요.</b>'}</p>
     ${many ? `<div class="opts">${pr.opts.map((x, i) => `<button class="optcard" data-act="propSel" data-i="${i}" aria-pressed="${i === pr.sel}"><b>안 ${i + 1}${x.best ? ' <span class="pill ok">추천</span>' : ''}</b><span>${esc(x.label)}</span><span>요청 ${x.met}/${x.tot} 반영${x.mustMiss ? ` · 필수 ${x.mustMiss}칸 못 넣음` : ''}</span><span class="muted">${pr.hadCur ? (x.changes ? `${x.changes}칸 바뀜` : '바뀌는 칸 없음') : '새 시간표'}${x.unplaced ? ` · ${x.unplaced}시간 못 넣음` : ''}</span></button>`).join('')}</div>` : `<p class="small" style="margin:0">요청 ${o.met}/${o.tot} 반영${pr.hadCur ? ` · ${o.changes ? `${o.changes}칸 바뀜(${o.chgCls.map(c => g.grade + '-' + c).join(', ')}반)` : '바뀌는 칸 없음'}` : ''}${o.unplaced ? ` · ${o.unplaced}시간 못 넣음` : ''}</p>`}
     ${o.unmet.length ? `<div class="ditems">${o.unmet.map(u => `<button class="issue" data-act="openClass" data-c="${u.c}"><span class="pill ${u.r.lv === 1 ? 'err' : 'warn'}">못 넣음</span><span>${g.grade}-${u.c}반 ${dk(u.k)} ${esc(reqLabel(u.r, ctx))}(${LV[u.r.lv]}) <span class="muted">— ${esc(u.why)}</span></span></button>`).join('')}</div>` : ''}
+    ${o.unmet.length ? det('propTips', '다 못 넣은 요청은 이렇게 정리해요', '안 고르기 → 다시 짜기 → 맞바꾸기 → 고정 → 조율', 0, conflictTipsHTML(), false) : ''}
     ${pr.hadCur ? '<p class="hint">아래 시간표에서 <b>노란 점선 칸</b>이 바뀌는 칸입니다.</p>' : ''}
     <div class="row"><button class="btn primary" data-act="propApply">${many ? `안 ${pr.sel + 1} 적용` : '적용'}</button><button class="btn" data-act="propRetry">다시 짜기</button><button class="btn ghost" data-act="propDiscard">버리기</button></div>
   </section>`;
@@ -2247,9 +2260,11 @@ function viewTT(info) {
     </div>`;
   const chat = det('ttChat', '말로 고치기', '“3반 목요일 3교시 전담으로”처럼 적으면 수정안을 만들어 보여 드려요', 0, chatPanelHTML(ctx).replace('<section class="panel chat">', '<section class="chat" style="display:flex;flex-direction:column;gap:10px">').replace(/<header>[\s\S]*?<\/header>/, ''), chatLog().length > 0 || !!ui.chatDraft);
   const diffPanel = diff.length ? `<section class="panel"><header><h2>확정 이후 바뀐 내용</h2><button class="btn sm" data-act="copyDiff">안내 문구 복사</button></header><p class="small" style="margin:0">${esc(diffText(ctx, diff))}</p></section>` : '';
+  const unmetN = ctx.real ? 0 : Object.values(rep.unmet || {}).reduce((x, y) => x + (+y || 0), 0);
+  const conflict = unmetN ? det('ttConflict', `못 넣은 요청 ${unmetN}칸, 이렇게 정리해요`, '안 고르기 → 다시 짜기 → 맞바꾸기 → 고정 → 조율 · 반 칩의 점이 있는 반부터 보세요', 0, conflictTipsHTML(), false) : '';
   const foot = stepFoot('tt', VAL.errCount ? `꼭 고칠 것 ${VAL.errCount}건이 남아 있어요` : '겹치는 곳 없이 완성됐어요');
   if (view === 'class') {
-    return `${head}${summary}${proposalPanelHTML(ctx)}${chat}<div class="split">
+    return `${head}${summary}${proposalPanelHTML(ctx)}${conflict}${chat}<div class="split">
       <section class="panel">
         ${toolbar}
         <div class="chips" aria-label="반 선택">${range(1, n).map(x => `<button class="chip" data-act="openClass" data-c="${x}" aria-pressed="${x === c}">${g.grade}-${x}${classErr(x) ? ' <span class="dot err" aria-label="꼭 고칠 것 있음"></span>' : classWarn(x) ? ' <span class="dot warn" aria-label="확인해 볼 것 있음"></span>' : ''}</button>`).join('')}</div>
@@ -2264,7 +2279,7 @@ function viewTT(info) {
   if (view === 'matrix') body = `<p class="hint">학년 전체를 한눈에 보는 화면입니다. 칸이나 반 이름을 누르면 그 반을 크게 열어 고칠 수 있습니다.</p>${matrixHTML(ctx)}`;
   else body = `<div class="cols">${teacherTables(ctx).map(t => `<div class="panel" style="padding:10px"><h3>${esc(t.name)} <span class="muted small">${t.count}시간</span></h3><div class="doc">${docTT(ctx, '', (d, p) => esc(t.at[`${d}-${p}`] || ''))}</div></div>`).join('') || '<p class="hint">전담 과목이 없습니다.</p>'}</div>`;
   const issuesHTML = VAL.issues.length ? VAL.issues.slice(0, 80).map(i => `<button class="issue" data-act="jump" data-c="${i.c || ''}" data-k="${i.key || ''}"><span class="pill ${i.lvl}">${i.lvl === 'err' ? '꼭 고칠 것' : '확인해 볼 것'}</span><span>${esc(i.msg)}</span></button>`).join('') : '<p class="hint">확인할 점이 없습니다.</p>';
-  return `${head}${summary}${proposalPanelHTML(ctx)}${chat}<section class="panel">${toolbar}${body}</section>${diffPanel}
+  return `${head}${summary}${proposalPanelHTML(ctx)}${conflict}${chat}<section class="panel">${toolbar}${body}</section>${diffPanel}
     <section class="panel"><header><h2>확인할 점</h2><span class="muted small">누르면 그 반으로 이동</span></header><div class="issues">${issuesHTML}</div></section>${foot}`;
 }
 function confirmSnap(ctx) { const snap = {}; for (let c = 1; c <= ctx.n; c++) { snap[c] = {}; for (const x of ctxCells(ctx, c)) snap[c][x.key] = subjOf(ctx, c, x) || (x.k === 'event' || x.k === 'ext' ? '#' + x.label : ''); } return snap; }
